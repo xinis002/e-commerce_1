@@ -15,6 +15,16 @@ class Category:
         for product in products:
             Category.total_uniq_products.add(product.name)
 
+    def __len__(self):
+        return sum(product.quantity for product in self.products)
+
+    def __str__(self):
+        return f"{self.name}, количество продуктов: {len(self)} шт."
+
+
+
+
+
 
     def add_product_to_category(self, product):
         self.__products.append(product)
@@ -22,6 +32,8 @@ class Category:
     @property
     def products(self):
         return '\n'.join([f"{product.name}, {product.price} руб. Остаток: {product.amount_in_stock} шт." for product in self.__products])
+
+
 
 
 
@@ -47,6 +59,14 @@ class Product:
         self.amount_in_stock = amount_in_stock
 
 
+
+
+    def __str__(self):
+        return f"{self.name}, {self.price} руб. Остаток: {self.amount_in_stock} шт."
+
+
+
+
     @classmethod
     def create_product(cls, name, description, price, amount_in_stock, products):
         for existing_product in products:
@@ -67,6 +87,13 @@ class Product:
         else:
             self.price = value
 
+    def __add__(self, other):
+        if isinstance(other, Product):
+            return self.price * self.amount_in_stock + other.price * other.amount_in_stock
+        else:
+            raise ValueError("Объект для сложения должен быть экземпляром класса Product")
+
+    
 
 
 
