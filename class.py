@@ -26,8 +26,17 @@ class Category:
 
 
 
-    def add_product_to_category(self, product):
-        self.__products.append(product)
+    def add_product(self, product):
+        if not isinstance(product, Product):
+            raise ValueError("Можно добавлять только продукты или их наследников")
+        self.products.append(product)
+
+    def __add__(self, other):
+        if isinstance(other, Product):
+            self.add_product(other)
+        else:
+            raise ValueError("Можно добавлять только продукты или их наследников")
+        return self
 
     @property
     def products(self):
@@ -51,12 +60,15 @@ class Product:
     discription: str
     price: float
     amount_in_stock = int
+    colour = str
 
-    def __init__(self, name, discription, price, amount_in_stock):
+    def __init__(self, name, discription, price, amount_in_stock, colour):
         self.name = name
         self.discription = discription
         self.price = price
         self.amount_in_stock = amount_in_stock
+        self.colour = colour
+
 
 
 
@@ -88,10 +100,37 @@ class Product:
             self.price = value
 
     def __add__(self, other):
-        if isinstance(other, Product):
-            return self.price * self.amount_in_stock + other.price * other.amount_in_stock
+        if type(self) == type(other):
+            total_price = self.price * self.amount_in_stock + other.price * other.amount_in_stock
+            return total_price
         else:
-            raise ValueError("Объект для сложения должен быть экземпляром класса Product")
+            raise TypeError("Можно складывать только товары одного класса")
+
+
+
+
+
+
+
+class Smartphone(Product):
+    def __init__(self,  name, discription, price, amount_in_stock, colour, performance, model, memory):
+        super().__init__(name, discription, price, amount_in_stock, colour)
+        self.performance = performance
+        self.model = model
+        self.memory = memory
+
+
+
+
+
+class Grass(Product):
+
+    def __init__(self, name, discription, price, amount_in_stock, colour, country, term):
+        super().__init__(name, discription, price, amount_in_stock, colour)
+        self.country = country
+        self.term = term
+
+
 
     
 
