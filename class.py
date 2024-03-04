@@ -23,6 +23,11 @@ class AbstractProduct(ABC):
     def __str__(self):
         pass
 
+class InfoMixin:
+    def __repr__(self):
+        class_name = self.__class__.__name__
+        attributes = ', '.join([f"{key}={value}" for key, value in self.__dict__.items()])
+        return f"{class_name}({attributes})"
 
 
 
@@ -85,7 +90,7 @@ class Category:
 
 
 
-class Product(AbstractProduct):
+class Product(InfoMixin, AbstractProduct):
     name: str
     discription: str
     price: float
@@ -94,6 +99,7 @@ class Product(AbstractProduct):
 
     def __init__(self, name, discription, price, amount_in_stock, colour):
         super().__init__(name, discription, price, amount_in_stock, colour)
+        print(repr(self))
 
 
 
@@ -138,23 +144,25 @@ class Product(AbstractProduct):
 
 
 
-class Smartphone(Product):
+class Smartphone(InfoMixin, Product):
     def __init__(self,  name, discription, price, amount_in_stock, colour, performance, model, memory):
         super().__init__(name, discription, price, amount_in_stock, colour)
         self.performance = performance
         self.model = model
         self.memory = memory
+        print(repr(self))
 
 
 
 
 
-class Grass(Product):
+class Grass(InfoMixin, Product):
 
     def __init__(self, name, discription, price, amount_in_stock, colour, country, term):
         super().__init__(name, discription, price, amount_in_stock, colour)
         self.country = country
         self.term = term
+        print(repr(self))
 
 
 
