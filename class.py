@@ -1,3 +1,38 @@
+from abc import ABC, abstractmethod
+
+class AbstractProduct(ABC):
+    @abstractmethod
+    def __init__(self, name, discription, price, amount_in_stock, colour):
+        self.name = name
+        self.discription = discription
+        self._price = price
+        self.amount_in_stock = amount_in_stock
+        self.colour = colour
+
+    @property
+    @abstractmethod
+    def price(self):
+        pass
+
+    @price.setter
+    @abstractmethod
+    def price(self, value):
+        pass
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+class InfoMixin:
+    def __repr__(self):
+        class_name = self.__class__.__name__
+        attributes = ', '.join([f"{key}={value}" for key, value in self.__dict__.items()])
+        return f"{class_name}({attributes})"
+
+
+
+
+
 class Category:
     name: str
     discription: str
@@ -55,7 +90,7 @@ class Category:
 
 
 
-class Product:
+class Product(InfoMixin, AbstractProduct):
     name: str
     discription: str
     price: float
@@ -63,11 +98,8 @@ class Product:
     colour = str
 
     def __init__(self, name, discription, price, amount_in_stock, colour):
-        self.name = name
-        self.discription = discription
-        self.price = price
-        self.amount_in_stock = amount_in_stock
-        self.colour = colour
+        super().__init__(name, discription, price, amount_in_stock, colour)
+        print(repr(self))
 
 
 
@@ -112,23 +144,25 @@ class Product:
 
 
 
-class Smartphone(Product):
+class Smartphone(InfoMixin, Product):
     def __init__(self,  name, discription, price, amount_in_stock, colour, performance, model, memory):
         super().__init__(name, discription, price, amount_in_stock, colour)
         self.performance = performance
         self.model = model
         self.memory = memory
+        print(repr(self))
 
 
 
 
 
-class Grass(Product):
+class Grass(InfoMixin, Product):
 
     def __init__(self, name, discription, price, amount_in_stock, colour, country, term):
         super().__init__(name, discription, price, amount_in_stock, colour)
         self.country = country
         self.term = term
+        print(repr(self))
 
 
 
