@@ -1,3 +1,33 @@
+from abc import ABC, abstractmethod
+
+class AbstractProduct(ABC):
+    @abstractmethod
+    def __init__(self, name, discription, price, amount_in_stock, colour):
+        self.name = name
+        self.discription = discription
+        self._price = price
+        self.amount_in_stock = amount_in_stock
+        self.colour = colour
+
+    @property
+    @abstractmethod
+    def price(self):
+        pass
+
+    @price.setter
+    @abstractmethod
+    def price(self, value):
+        pass
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+
+
+
+
+
 class Category:
     name: str
     discription: str
@@ -55,7 +85,7 @@ class Category:
 
 
 
-class Product:
+class Product(AbstractProduct):
     name: str
     discription: str
     price: float
@@ -63,11 +93,7 @@ class Product:
     colour = str
 
     def __init__(self, name, discription, price, amount_in_stock, colour):
-        self.name = name
-        self.discription = discription
-        self.price = price
-        self.amount_in_stock = amount_in_stock
-        self.colour = colour
+        super().__init__(name, discription, price, amount_in_stock, colour)
 
 
 
