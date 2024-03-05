@@ -1,13 +1,10 @@
 from abc import ABC, abstractmethod
 
 class AbstractProduct(ABC):
-    @abstractmethod
-    def __init__(self, name, discription, price, amount_in_stock, colour):
-        self.name = name
-        self.discription = discription
-        self._price = price
-        self.amount_in_stock = amount_in_stock
-        self.colour = colour
+
+    def __init__(self):
+        pass
+
 
     @property
     @abstractmethod
@@ -22,6 +19,9 @@ class AbstractProduct(ABC):
     @abstractmethod
     def __str__(self):
         pass
+
+
+
 
 class InfoMixin:
     def __repr__(self):
@@ -98,7 +98,12 @@ class Product(InfoMixin, AbstractProduct):
     colour = str
 
     def __init__(self, name, discription, price, amount_in_stock, colour):
-        super().__init__(name, discription, price, amount_in_stock, colour)
+        self.name = name
+        self.discription = discription
+        self._price = price
+        self.amount_in_stock = amount_in_stock
+        self.colour = colour
+
         print(repr(self))
 
 
@@ -122,14 +127,14 @@ class Product(InfoMixin, AbstractProduct):
 
     @property
     def price(self):
-        return self.price
+        return self._price
 
     @price.setter
-    def price(self,value):
+    def price(self, value):
         if value <= 0:
             print('Price is incorrect')
         else:
-            self.price = value
+            self._price = value
 
     def __add__(self, other):
         if type(self) == type(other):
