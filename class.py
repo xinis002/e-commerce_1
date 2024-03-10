@@ -21,6 +21,7 @@ class AbstractProduct(ABC):
         pass
 
 
+    
 
 
 class InfoMixin:
@@ -60,7 +61,6 @@ class Category:
 
 
 
-
     def add_product(self, product):
         if not isinstance(product, Product):
             raise ValueError("Можно добавлять только продукты или их наследников")
@@ -72,6 +72,15 @@ class Category:
         else:
             raise ValueError("Можно добавлять только продукты или их наследников")
         return self
+
+    def average_price(self):
+        try:
+            total_price = sum(product.price for product in self.products)
+            average = total_price / len(self.products)
+            return average
+        except ZeroDivisionError:
+            return 0
+
 
     @property
     def products(self):
@@ -98,13 +107,18 @@ class Product(InfoMixin, AbstractProduct):
     colour = str
 
     def __init__(self, name, discription, price, amount_in_stock, colour):
-        self.name = name
-        self.discription = discription
-        self._price = price
-        self.amount_in_stock = amount_in_stock
-        self.colour = colour
-
-        print(repr(self))
+        try:
+            if amount_in_stock <= 0:
+                raise ValueError("Количество товара не может быть нулевым или отрицательным.")
+            self.name = name
+            self.discription = discription
+            self._price = price
+            self.amount_in_stock = amount_in_stock
+            self.colour = colour
+            print(repr(self))
+        except ValueError as e:
+            print(f"Ошибка при создании продукта: {e}")
+            raise
 
 
 
