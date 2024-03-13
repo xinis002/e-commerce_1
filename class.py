@@ -52,7 +52,7 @@ class Category:
             Category.total_uniq_products.add(product.name)
 
     def __len__(self):
-        return sum(product.quantity for product in self.products)
+        return sum(product.amount_in_stock for product in self.products)
 
     def __str__(self):
         return f"{self.name}, количество продуктов: {len(self)} шт."
@@ -64,7 +64,9 @@ class Category:
     def add_product(self, product):
         if not isinstance(product, Product):
             raise ValueError("Можно добавлять только продукты или их наследников")
-        self.products.append(product)
+        if product.amount_in_stock <= 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен.")
+        self.__products.append(product)
 
     def __add__(self, other):
         if isinstance(other, Product):
@@ -75,8 +77,8 @@ class Category:
 
     def average_price(self):
         try:
-            total_price = sum(product.price for product in self.products)
-            average = total_price / len(self.products)
+            total_price = sum(product.price for product in self.__products)
+            average = total_price / len(self.__products)
             return average
         except ZeroDivisionError:
             return 0
